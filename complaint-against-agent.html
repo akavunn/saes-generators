@@ -1,0 +1,143 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+    <div class="holder">
+        <div id="fbi_wrapper" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
+            <div id="factionrow" style="background: #171b29; border-block: 5px solid #FFBF40; color: white; display: flex; justify-content: space-between; align-items: center; font-weight: 700; padding: 0.5rem;">
+                <div id="faction" style="display: flex; gap: 0.5rem; align-items: center; justify-content: left; text-align: left;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/New_seal_of_the_Federal_Bureau_of_Investigation.svg" alt="FBI" style="width: auto; height: 1.5rem;">
+                    <span>FBI</span>
+                </div>
+                <div id="superior" style="display: flex; gap: 0.5rem; align-items: center; justify-content: end; text-align: right;">
+                    <span>DEPARTMENT OF JUSTICE</span>
+                </div>
+            </div>
+            <div id="title" style="background: #363636; padding: 0.5rem; align-items: center; justify-content: center; display: flex; color: white; font-weight: 700;">
+                <span>ПРЕТЕНЗИЯ К РАБОТЕ СОТРУДНИКА ФБР</span>
+            </div>
+            <div id="content" style="background: #f6f6f6; padding: 1rem;">
+                <div style="display: flex; align-items: center; justify-content: space-around; gap: 1rem;">
+                    <img src="https://i.imgur.com/rX8L4T1.png" alt="DoJ" class="imghead">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/New_seal_of_the_Federal_Bureau_of_Investigation.svg" alt="FBI" class="imghead">
+                </div>
+                <div style="border-left: 5px solid #ffbf40;">
+                    <h4 style="margin-left: 5px;">1. ИНФОРМАЦИЯ О ЗАЯВИТЕЛЕ</h4>
+                </div>
+                <ul style="margin: 0; padding: 0; list-style: none; font-size: 0.9rem;">
+                    <li><b>Полное ФИО: </b><input id="fullname" type="text"></li>
+                    <li><b>Контактный номер телефона: </b><input id="phone" type="text"></li>
+                    <li><b>Место жительства: </b><input id="house" type="text"></li>
+                    <li><b>Пол: </b><select id="gender"><option value="Мужской">Мужской</option><option value="Женский">Женский</option></select></li>
+                    <li><b>Возраст: </b><input id="age" type="number" max="100" min="16"></li>
+                </ul>
+                <div style="border-left: 5px solid #ffbf40;">
+                    <h4 style="margin-left: 5px;">2. ИНФОРМАЦИЯ ОБ ИНЦИДЕНТЕ</h4>
+                </div>
+                <ul style="margin: 0; padding: 0; list-style: none; font-size: 0.9rem;">
+                    <li class="textareacont"><b>Список нарушителей: </b><textarea id="suspects"></textarea></li>
+                    <li class="textareacont"><b>Описание ситуации: </b><textarea id="situation"></textarea></li>
+                    <li class="textareacont"><b>Приложения к заявлению: </b><textarea id="files"></textarea></li>
+                </ul>
+                <hr>
+                <input type="checkbox" style="pointer-events: none" checked>
+                <span style="margin-left: 1rem; font-size: 0.8rem;">Я даю согласие на проверку данных, изложенных в заявлении, в том числе в отношении меня, а также персональные и иные данные, необходимые для расследования.
+                    Подавая данное заявление, я даю обязательство о явке на допрос в случае возникновения необходимости и понимаю, что анонимные жалобы, в том числе жалобы без контактной информации или с недостаточной доказательной базой, рассмотрению не подлежат.
+                </span>
+            </div>
+            <div id="footer" style="font-size: 0.7rem; background: #171b29; border-block: 5px solid #FFBF40; color: white !important; text-decoration: none !important; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0.5rem;">
+                <span><a href="">About us</a> — <a href="">News and Alerts</a> — <a href="">FBI Careers</a></span>
+                <div style="border-top: 1px solid white; width: 50%; opacity: 0.5; margin-block: 0.5rem;"></div>
+                <span>© 2025 Federal Bureau of Investigations. All rights reserved.</span>
+            </div>
+        </div>
+        <div id="panel" style="margin-top: 1rem; display: flex; flex-direction: column; align-items: center;">
+            <div class="btns">
+                <button id="gen" style="background: #171b29; color: white; font-size: 1.5rem; padding: 0.3rem 3rem;">Сгенерировать</button>
+                <a href=""><button style="background: #171b29; color: white; font-size: 1.5rem; padding: 0.3rem 3rem; pointer-events: none;">Назад к разделу</button></a>
+            </div>
+            <div id="codediv" style="background: rgba(0, 255, 0, 0.3); padding: 1rem; margin-top: 1rem; color: #008f30; border: 1px solid rgba(0,255,0,0.6);">
+                Скопируйте код из поля ниже и вставьте его на форум:
+                <br><textarea id="code" style="width: 100%; margin-top: 1rem;" readonly rows="10" cols="30"></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("codediv").style.display = 'none';
+    document.getElementById("gen").addEventListener("click", () => {
+        document.getElementById("code").textContent = `[fbiwrapper=ПРЕТЕНЗИЯ К РАБОТЕ АГЕНТА ФБР][coll][center][image=150]https://i.imgur.com/rX8L4T1.png[/image][/center]|[center][image=150]https://upload.wikimedia.org/wikipedia/commons/7/72/New_seal_of_the_Federal_Bureau_of_Investigation.svg[/image][/center][/coll]
+ 
+ 
+[border=#FFBF40][b]1. ИНФОРМАЦИЯ О ЗАЯВИТЕЛЕ:[/b][/border]
+[b]Полное имя[/b]
+${document.getElementById("fullname").value}
+
+[b]Номер телефона[/b]
+${document.getElementById("phone").value}
+
+[b]Место жительства[/b]
+${document.getElementById("house").value}
+
+[b]Пол[/b]
+${document.getElementById("gender").value}
+
+[b]Возраст[/b]
+${document.getElementById("age").value}
+
+[border=#FFBF40][b]2. ИНФОРМАЦИЯ ОБ ИНЦИДЕНТЕ:[/b][/border]
+[b]Список нарушителей[/b]
+${document.getElementById("suspects").value}
+
+[b]Описание инцидента[/b]
+${document.getElementById("situation").value}
+
+[b]Приложения к заявлению[/b]
+${document.getElementById("files").value}
+
+[size=90][hr][/hr]
+[constcb=true][/constcb] Я даю согласие на проверку данных, изложенных в заявлении, в том числе в отношении меня, а также персональные и иные данные, необходимые для расследования. Подавая данное заявление, я даю обязательство о явке на допрос в случае возникновения необходимости и понимаю, что анонимные жалобы, в том числе жалобы без контактной информации или с недостаточной доказательной базой, рассмотрению не подлежат.[/size][/fbiwrapper]`
+    document.getElementById("codediv").style.display = 'block';
+    });
+    
+    
+</script>
+
+<style>
+    body {
+        font-family: "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;
+    }
+    body div.holder {
+        width: 60rem;
+        margin: 0 auto;
+    }
+    div#fbi_wrapper div#footer a {
+        color: white !important;
+        text-decoration: none !important;
+    }
+    .imghead {
+        width: 10rem;
+        height: auto;
+    }
+    ul li {
+        margin-top: 0.3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    @media screen and (max-width: 1024px) {
+        body div.holder {
+            width: unset !important;
+        }
+        .imghead {
+            width: 6rem;
+        }
+        div.btns {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.7rem;
+        }
+    }
+</style>
