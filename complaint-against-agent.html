@@ -56,20 +56,94 @@
         <div id="panel" style="margin-top: 1rem; display: flex; flex-direction: column; align-items: center;">
             <div class="btns">
                 <button id="gen" style="background: #171b29; color: white; font-size: 1.5rem; padding: 0.3rem 3rem;">Сгенерировать</button>
-                <a href=""><button style="background: #171b29; color: white; font-size: 1.5rem; padding: 0.3rem 3rem; pointer-events: none;">Назад к разделу</button></a>
+                <a href="https://sa-es.online/fbi/viewforum.php?f=93"><button style="background: #171b29; color: white; font-size: 1.5rem; padding: 0.3rem 3rem; pointer-events: none;">Назад к разделу</button></a>
             </div>
             <div id="codediv" style="background: rgba(0, 255, 0, 0.3); padding: 1rem; margin-top: 1rem; color: #008f30; border: 1px solid rgba(0,255,0,0.6);">
-                В этой версии генератора отсутствует проверка правильности заполнения полей - пожалуйста, удостоверьтесь, что заполнили все верно.
-                <br>После этого скопируйте код из поля ниже и вставьте его на форум:
+                Скопируйте код из поля ниже и вставьте его на форум:
                 <br><textarea id="code" style="width: 100%; margin-top: 1rem;" readonly rows="10" cols="30"></textarea>
+            </div>
+            <div id="errdiv" style="background: rgba(255, 0, 0, 0.3); padding: 1rem; margin-top: 1rem; color: #8f0000; border: 1px solid rgba(255, 0,0,0.6);">
+                Вы допустили ошибки при заполнении формы:
+                <ul id="errlist" style="margin: 0; padding: 0; font-size: 0.8rem; list-style-type:circle;"></ul>
             </div>
         </div>
     </div>
 </body>
 
 <script>
+
+    const fields = [
+        {
+            id:'fullname',
+            regex: /^[a-zA-Z ]+$/,
+            name:'Полное имя',
+            criteria: 'При заполнении следует использовать только символы латинского алфавита и пробелы.'
+        },
+        {
+            id:'phone',
+            regex: /^[0-9]+$/,
+            name:'Номер телефона',
+            criteria: 'При заполнении следует использовать только арабские цифры.'
+        },
+        {
+            id:'house',
+            regex: /^[a-zA-Zа-яА-Я0-9 \-,.]+$/,
+            name:'Место проживания',
+            criteria: 'При заполнении следует использовать только символы латинского и русского алфавита, а также дефисы, запятые и точки.'
+        },
+        {
+            id:'age',
+            regex: /^[0-9]+$/,
+            name:'Возраст',
+            criteria:'При заполнении следует использовать только арабские цифры. Значение должно быть от 16 до 100.'
+        },
+        {
+            id:'suspects',
+            regex: /^[a-zA-Zа-яА-Я0-9 \-,.!:]+$/,
+            name:'Описание подозреваемых',
+            criteria: 'При заполнении следует использовать только символы латинского и русского алфавита, а также знаки препинания.'
+        },
+        {
+            id:'situation',
+            regex: /^[a-zA-Zа-яА-Я0-9 \-,.!:]+$/,
+            name:'Описание ситуации',
+            criteria: 'При заполнении следует использовать только символы латинского и русского алфавита, а также знаки препинания.'
+        },
+        {
+            id:'files',
+            regex: /^[a-zA-Zа-яА-Я0-9 \-,.!:\\/]+$/,
+            name:'Приложения к заявлению',
+            criteria: 'При заполнении следует использовать только символы латинского и русского алфавита, а также знаки препинания. Рядом с ссылками, пожалуйста, указывайте их внутриигровое представление (видео/фото/др.)'
+        },
+    ]
+
     document.getElementById("codediv").style.display = 'none';
+    document.getElementById("errdiv").style.display = 'none';
     document.getElementById("gen").addEventListener("click", () => {
+        document.getElementById("codediv").style.display = 'none';
+        document.getElementById("errdiv").style.display = 'none';
+        let correct = true;
+        let errors = [];
+        document.getElementById('errlist').innerHTML = '';
+        for(let i = 0; i < fields.length; i++) {
+            let val = document.getElementById(fields[i].id).value;
+            if (val=="" || val == 0) {
+                console.log("a")
+                correct = false;
+                errors.push([fields[i].name,"Это поле не может быть пустым."]);
+            }
+            else if(fields[i].id=="age" && (val < 16 || val > 100)) {
+                correct = false;
+                console.log("b")
+                errors.push([fields[i].name,fields[i].criteria]);
+            }
+            else if (!fields[i].regex.test(val)) {
+                console.log("c")
+                correct = false;
+                errors.push([fields[i].name,fields[i].criteria]);
+            }
+        }
+        if(correct) {
         document.getElementById("code").textContent = `[fbiwrapper=ПРЕТЕНЗИЯ К РАБОТЕ АГЕНТА ФБР][coll][center][image=150]https://i.imgur.com/rX8L4T1.png[/image][/center]|[center][image=150]https://upload.wikimedia.org/wikipedia/commons/7/72/New_seal_of_the_Federal_Bureau_of_Investigation.svg[/image][/center][/coll]
  
  
@@ -102,7 +176,18 @@ ${document.getElementById("files").value}
 [size=90][hr][/hr]
 [constcb=true][/constcb] Я даю согласие на проверку данных, изложенных в заявлении, в том числе в отношении меня, а также персональные и иные данные, необходимые для расследования. Подавая данное заявление, я даю обязательство о явке на допрос в случае возникновения необходимости и понимаю, что анонимные жалобы, в том числе жалобы без контактной информации или с недостаточной доказательной базой, рассмотрению не подлежат.[/size][/fbiwrapper]`
     document.getElementById("codediv").style.display = 'block';
+    } else {
+        const errorul = document.getElementById("errlist");
+        for(let j = 0; j < errors.length; j++) {
+            let el = document.createElement("li");
+            console.log(errors[j][0])
+            el.innerHTML = `Поле ${errors[j][0]} заполнено неправильно: ${errors[j][1]}`
+            errorul.appendChild(el);
+        }
+        document.getElementById("errdiv").style.display = 'block';
+    }
     });
+
     
     
 </script>
